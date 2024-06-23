@@ -13,5 +13,6 @@
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   }
 }

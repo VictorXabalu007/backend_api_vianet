@@ -1,22 +1,15 @@
 import { knex } from '../db/database';
-interface DbConfig {
-  client: string;
-  connection: {
-    host: string;
-    user: string;
-    password: string;
-    database: string;
-  };
-}
+
 
 
 //------------faz o cadastro do id geral--------------------------------------------
 
-async function insertUser(login: string, senha: string): Promise<number> {
+async function insertUser(email: string, senha: string): Promise<number> {
   try {
-    const [userId] = await knex('usuario').insert({
-      login,
-      senha
+    const [userId] = await knex('Usuario').insert({
+      email,
+      senha,
+      tipo:1
     });
     return userId;
   } catch (error) {
@@ -26,10 +19,10 @@ async function insertUser(login: string, senha: string): Promise<number> {
 }
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(nome: string, endereco: string, usuarioId: number): Promise<number> {
+async function insertDistributor(username: string, endereco: string, usuarioId: number): Promise<number> {
   try {
     const [distributorId] = await knex('Distribuidores').insert({
-      nome,
+      username,
       endereco,
       usuario_id: usuarioId
     });

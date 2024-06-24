@@ -1,15 +1,16 @@
-import { knex } from '../db/database';
-
+import {
+  knex
+} from '../db/database';
 
 
 //------------faz o cadastro do id geral--------------------------------------------
 
-async function insertUser(email: string, senha: string): Promise<number> {
+async function insertUser(email: string, senha: string): Promise < number > {
   try {
     const [userId] = await knex('Usuario').insert({
       email,
       senha,
-      tipo:1
+      tipo: 1
     });
     return userId;
   } catch (error) {
@@ -19,7 +20,7 @@ async function insertUser(email: string, senha: string): Promise<number> {
 }
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(username: string, endereco: string, usuarioId: number): Promise<number> {
+async function insertDistributor(username: string, endereco: string, usuarioId: number): Promise < number > {
   try {
     const [distributorId] = await knex('Distribuidores').insert({
       username,
@@ -33,13 +34,13 @@ async function insertDistributor(username: string, endereco: string, usuarioId: 
   }
 }
 //------------principal--------------------------------------------
-export async function addDistribuidor(nomeDistribuidor: string, enderecoDistribuidor: string, loginUsuario: string, senhaUsuario: string): Promise<void> {
+export async function addDistribuidor(nomeDistribuidor: string, enderecoDistribuidor: string, loginUsuario: string, senhaUsuario: string): Promise < void > {
 
-  
+
   const trx = await knex.transaction();
 
   try {
-    
+
     const userId = await insertUser(loginUsuario, senhaUsuario);
 
     await insertDistributor(nomeDistribuidor, enderecoDistribuidor, userId);

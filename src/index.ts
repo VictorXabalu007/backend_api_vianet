@@ -5,22 +5,20 @@ import express, {
 } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import {
-  addFaramacia
-} from './controler/addFarmacia';
 import test from 'node:test';
-const {
-  addDistribuidor
-} = require('./controler/addDistribuidor.js');
-const {
-  getUserByEmail,
-  getUserByID
-} = require('./auth/user');
+
+import { addFaramacia } from './controler/addFarmacia';
+import { addDistribuidor } from './controler/addDistribuidor';
+import { getUserByEmail, getUserByID } from './auth/user';
+import { routes } from './routes';
+
 const secret = "test"
 //-----------------------------------------------------------------------------------------
 
 const app = express();
 app.use(express.json());
+
+app.use(routes);
 
 app.get('/produtos', (req: Request, res: Response) => {
   res.send('Hello World!');
@@ -161,27 +159,7 @@ app.post('/addDistribuidor', async (req, res) => {
 
 //----------------------------------------------------------------------------------------
 
-app.post('/addFarmacia', async (req, res) => {
-  try {
 
-    const {
-      username,
-      celular,
-      Nome,
-      CNPJ,
-      endereco,
-      loginUsuario,
-      senhaUsuario
-    } = req.body;
-
-    await addFaramacia(username, celular, Nome, CNPJ, endereco, loginUsuario, senhaUsuario);
-
-    res.send('Distribuidor inseridos com sucesso!');
-  } catch (error) {
-    console.error('Erro ao inserir a Farmacia:', error);
-    res.status(500).send('Erro ao inserir Farmacia');
-  }
-});
 
 
 //----------------------------------------------------------------------------------------

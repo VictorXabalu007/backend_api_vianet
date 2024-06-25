@@ -1,3 +1,6 @@
+//vai adicionar as farmacias
+
+
 import {
   knex
 } from '../db/database';
@@ -5,12 +8,12 @@ import {
 
 //------------faz o cadastro do id geral--------------------------------------------
 
-async function insertUser(email: string, senha: string): Promise < number > {
+async function insertUser(email, senha) {
   try {
     const [userId] = await knex('Usuario').insert({
       email,
       senha,
-      tipo: 1
+      tipo: 2
     });
     return userId;
   } catch (error) {
@@ -20,21 +23,26 @@ async function insertUser(email: string, senha: string): Promise < number > {
 }
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(username: string, endereco: string, usuarioId: number): Promise < number > {
+async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId) {
   try {
-    const [distributorId] = await knex('Distribuidores').insert({
+    const [FarmaciaId] = await knex('Farmacia').insert({
       username,
+      pontos: 0,
+      celular,
+      Nome,
+      CNPJ,
       endereco,
       usuario_id: usuarioId
     });
-    return distributorId;
+    return FarmaciaId;
   } catch (error) {
     console.error('Erro ao inserir distribuidor:', error);
     throw error;
   }
 }
+
 //------------principal--------------------------------------------
-export async function addDistribuidor(nomeDistribuidor: string, enderecoDistribuidor: string, loginUsuario: string, senhaUsuario: string): Promise < void > {
+export async function addFaramacia(username, celular, Nome, CNPJ, endereco, loginUsuario, senhaUsuario) {
 
 
   const trx = await knex.transaction();
@@ -43,7 +51,7 @@ export async function addDistribuidor(nomeDistribuidor: string, enderecoDistribu
 
     const userId = await insertUser(loginUsuario, senhaUsuario);
 
-    await insertDistributor(nomeDistribuidor, enderecoDistribuidor, userId);
+    await insertFarmacia(username, celular, Nome, CNPJ, endereco, userId);
 
     await trx.commit();
 

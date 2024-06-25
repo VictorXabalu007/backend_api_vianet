@@ -1,8 +1,4 @@
-import express, {
-  Request,
-  Response,
-  NextFunction
-} from 'express';
+import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import test from 'node:test';
@@ -20,7 +16,7 @@ app.use(express.json());
 
 app.use(routes);
 
-app.get('/produtos', (req: Request, res: Response) => {
+app.get('/produtos', (req , res ) => {
   res.send('Hello World!');
 });
 
@@ -30,8 +26,8 @@ app.get('/produtos', (req: Request, res: Response) => {
 
 
 
-function verifyToken(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers['x-access-token'] as string;
+function verifyToken(req, res, next) {
+  const token = req.headers['x-access-token'];
   if (!token) {
     return res.status(403).send({
       auth: false,
@@ -47,9 +43,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
       });
     }
 
-    req.userId = (decoded as {
-      id: number
-    }).id;
+    req.userId = decoded.id;
     next();
   });
 }
@@ -58,7 +52,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 //----------------------------------------------------------------------------------------------
 
 
-app.post('/login', async (req: Request, res: Response) => {
+app.post('/login', async (req, res ) => {
   const {
     email,
     senha
@@ -98,7 +92,7 @@ app.post('/login', async (req: Request, res: Response) => {
 
 //-----------------------------------------------------------------------
 
-app.get('/me', verifyToken, async (req: Request, res: Response) => {
+app.get('/me', verifyToken, async (req, res ) => {
   const user = await getUserByID(req.userId);
   console.log(req.userId);
   console.log(user);
@@ -114,7 +108,7 @@ app.get('/me', verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-app.get('/me2', verifyToken, async (req: Request, res: Response) => {
+app.get('/me2', verifyToken, async (req, res ) => {
   try {
     const user = await getUserByID(req.userId);
     console.log(req.userId);

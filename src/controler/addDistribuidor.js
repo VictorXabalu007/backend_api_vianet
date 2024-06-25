@@ -1,6 +1,3 @@
-//vai adicionar as farmacias
-
-
 import {
   knex
 } from '../db/database';
@@ -8,12 +5,12 @@ import {
 
 //------------faz o cadastro do id geral--------------------------------------------
 
-async function insertUser(email: string, senha: string): Promise < number > {
+async function insertUser(email, senha) {
   try {
     const [userId] = await knex('Usuario').insert({
       email,
       senha,
-      tipo: 2
+      tipo: 1
     });
     return userId;
   } catch (error) {
@@ -23,27 +20,21 @@ async function insertUser(email: string, senha: string): Promise < number > {
 }
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertFarmacia(username: string, celular: number, Nome: string, CNPJ: string, endereco: string, usuarioId: number): Promise < number > {
+async function insertDistributor(username, endereco, usuarioId) {
   try {
-    const [FarmaciaId] = await knex('Farmacia').insert({
+    const [distributorId] = await knex('Distribuidores').insert({
       username,
-      pontos: 0,
-      celular,
-      Nome,
-      CNPJ,
       endereco,
       usuario_id: usuarioId
     });
-    return FarmaciaId;
+    return distributorId;
   } catch (error) {
     console.error('Erro ao inserir distribuidor:', error);
     throw error;
   }
 }
-
 //------------principal--------------------------------------------
-export async function addFaramacia(username: string, celular: number, Nome: string, CNPJ: string, endereco: string, loginUsuario: string, senhaUsuario: string): Promise < void > {
-
+export async function addDistribuidor(nomeDistribuidor, enderecoDistribuidor, loginUsuario, senhaUsuario) {
 
   const trx = await knex.transaction();
 
@@ -51,7 +42,7 @@ export async function addFaramacia(username: string, celular: number, Nome: stri
 
     const userId = await insertUser(loginUsuario, senhaUsuario);
 
-    await insertFarmacia(username, celular, Nome, CNPJ, endereco, userId);
+    await insertDistributor(nomeDistribuidor, enderecoDistribuidor, userId);
 
     await trx.commit();
 

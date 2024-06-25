@@ -3,7 +3,7 @@ import {
 } from "../db/database";
 
 // Função para obter um usuário por email
-export function getUserByEmail(email: string) {
+export function getUserByEmail(email) {
   try {
     const user = knex('Usuario').where({
       email
@@ -14,7 +14,7 @@ export function getUserByEmail(email: string) {
     throw error;
   }
 }
-export function getUserByID(id: number) {
+export function getUserByID(id) {
   try {
     const user = knex('Usuario').where({
       id
@@ -26,9 +26,9 @@ export function getUserByID(id: number) {
   }
 }
 
-//vai mostrar as informaçoes 
+//vai mostrar as informaçoes
 //ainda n funciona
-export async function getInformationByID(id: number) {
+export async function getInformationByID(id) {
   try {
     const user = await knex('Usuario').where({
       id

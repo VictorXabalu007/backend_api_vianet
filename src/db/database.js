@@ -1,6 +1,6 @@
 import { knex as conection, Knex } from "knex";
 
-export const config: Knex.Config = {
+export const config = {
     client: 'mysql',
       connection: {
           host: "192.168.1.104",
@@ -11,7 +11,7 @@ export const config: Knex.Config = {
       migrations: {
         extension: "ts",
         directory: "./db/migrations"
-      }
+      },
   };
 
 export const knex = conection(config)

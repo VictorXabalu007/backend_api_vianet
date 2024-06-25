@@ -3,7 +3,7 @@
 
 import {
   knex
-} from '../db/database';
+} from '../db/database.js';
 
 
 //------------faz o cadastro do id geral--------------------------------------------

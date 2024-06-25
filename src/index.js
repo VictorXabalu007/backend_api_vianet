@@ -1,12 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import test from 'node:test';
-
-import { addFaramacia } from './controler/addFarmacia';
-import { addDistribuidor } from './controler/addDistribuidor';
-import { getUserByEmail, getUserByID } from './auth/user';
-import { routes } from './routes';
+import { addDistribuidor } from './controler/addDistribuidor.js';
+import { getUserByEmail, getUserByID } from './auth/user.js';
+import { routes } from './routes/index.js';
 
 const secret = "test"
 //-----------------------------------------------------------------------------------------

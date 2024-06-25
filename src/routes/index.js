@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { farmaciaRoutes } from "./farmaciaRoutes";
+import { farmaciaRoutes } from "./farmaciaRoutes.js";
 
 const routes = Router();
 

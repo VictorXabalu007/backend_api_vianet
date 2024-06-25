@@ -1,6 +1,6 @@
 import {
   knex
-} from "../db/database";
+} from "../db/database.js";
 
 // Função para obter um usuário por email
 export function getUserByEmail(email) {

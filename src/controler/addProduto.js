@@ -1,3 +1,3 @@
-import { knex } from '../db/database';
+import { kknex } from "../db/database.js";
 
  //vai adicionar os produtos

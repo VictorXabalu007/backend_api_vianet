@@ -1,16 +1,11 @@
 //vai adicionar as farmacias
-
-
-import {
-  knex
-} from '../db/database.js';
-
+import { kknex } from "../db/database.js";
 
 //------------faz o cadastro do id geral--------------------------------------------
 
 async function insertUser(email, senha) {
   try {
-    const [userId] = await knex('Usuario').insert({
+    const [userId] = await kknex('Usuario').insert({
       email,
       senha,
       tipo: 2
@@ -25,7 +20,7 @@ async function insertUser(email, senha) {
 
 async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId) {
   try {
-    const [FarmaciaId] = await knex('Farmacia').insert({
+    const [FarmaciaId] = await kknex('Farmacia').insert({
       username,
       pontos: 0,
       celular,
@@ -45,7 +40,7 @@ async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId
 export async function addFaramacia(username, celular, Nome, CNPJ, endereco, loginUsuario, senhaUsuario) {
 
 
-  const trx = await knex.transaction();
+  const trx = await kknex.transaction();
 
   try {
 

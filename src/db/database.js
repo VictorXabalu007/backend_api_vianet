@@ -1,4 +1,4 @@
-import { knex as conection } from "knex";
+import knex from "knex";
 
 export const config = {
     client: 'mysql',
@@ -14,4 +14,4 @@ export const config = {
       },
   };
 
-export const knex = conection(config)
+export const kknex = knex(config);

@@ -1,13 +1,11 @@
-import {
-  knex
-} from '../db/database.js';
+import { kknex } from "../db/database.js";
 
 
 //------------faz o cadastro do id geral--------------------------------------------
 
 async function insertUser(email, senha) {
   try {
-    const [userId] = await knex('Usuario').insert({
+    const [userId] = await kknex('Usuario').insert({
       email,
       senha,
       tipo: 1
@@ -22,7 +20,7 @@ async function insertUser(email, senha) {
 
 async function insertDistributor(username, endereco, usuarioId) {
   try {
-    const [distributorId] = await knex('Distribuidores').insert({
+    const [distributorId] = await kknex('Distribuidores').insert({
       username,
       endereco,
       usuario_id: usuarioId
@@ -36,7 +34,7 @@ async function insertDistributor(username, endereco, usuarioId) {
 //------------principal--------------------------------------------
 export async function addDistribuidor(nomeDistribuidor, enderecoDistribuidor, loginUsuario, senhaUsuario) {
 
-  const trx = await knex.transaction();
+  const trx = await kknex.transaction();
 
   try {
 

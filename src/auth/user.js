@@ -1,11 +1,9 @@
-import {
-  knex
-} from "../db/database.js";
+import { kknex } from "../db/database.js";
 
 // Função para obter um usuário por email
 export function getUserByEmail(email) {
   try {
-    const user = knex('Usuario').where({
+    const user = kknex('Usuario').where({
       email
     }).first();
     return user;
@@ -16,7 +14,7 @@ export function getUserByEmail(email) {
 }
 export function getUserByID(id) {
   try {
-    const user = knex('Usuario').where({
+    const user = kknex('Usuario').where({
       id
     }).first();
     return user;
@@ -30,7 +28,7 @@ export function getUserByID(id) {
 //ainda n funciona
 export async function getInformationByID(id) {
   try {
-    const user = await knex('Usuario').where({
+    const user = await kknex('Usuario').where({
       id
     }).first();
     return user;

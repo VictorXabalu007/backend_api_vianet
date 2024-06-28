@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addFaramacia } from "../controler/addFarmacia.js";
+import { addFaramacia } from "../controler/controlerFarmacia.js";
 
 const farmaciaRoutes = Router();
 

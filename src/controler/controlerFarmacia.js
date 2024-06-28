@@ -1,21 +1,8 @@
 //vai adicionar as farmacias
-import { kknex } from "../db/database.js";
+import { kknex } from "../config/database.js";
+import { insertUser } from "./controlerUser.js";
 
-//------------faz o cadastro do id geral--------------------------------------------
 
-async function insertUser(email, senha) {
-  try {
-    const [userId] = await kknex('Usuario').insert({
-      email,
-      senha,
-      tipo: 2
-    });
-    return userId;
-  } catch (error) {
-    console.error('Erro ao inserir usuário:', error);
-    throw error;
-  }
-}
 //------------cadastra os dados exclusivos--------------------------------------------
 
 async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId) {

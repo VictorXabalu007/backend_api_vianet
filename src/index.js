@@ -1,10 +1,9 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { addDistribuidor } from './controler/addDistribuidor.js';
-import { getUserByEmail, getUserByID } from './auth/user.js';
+import { getUserByEmail, getUserByID } from './controler/controlerUser.js';
 import { routes } from './routes/index.js';
-
 const secret = "test"
+
 //-----------------------------------------------------------------------------------------
 
 const app = express();
@@ -16,11 +15,7 @@ app.get('/produtos', (req , res ) => {
   res.send('Hello World!');
 });
 
-
 //---------------------------------------------------------------------------------------------
-
-
-
 
 function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
@@ -107,20 +102,11 @@ app.get('/me', verifyToken, async (req, res ) => {
 app.get('/me2', verifyToken, async (req, res ) => {
   try {
     const user = await getUserByID(req.userId);
-    console.log(req.userId);
-    console.log(user);
-
     if (!user) {
       return res.status(404).send('Usuário não encontrado');
     }
+    res.status(200).send(`Olá, usuário tipo ${user.tipo} com ID ${user.id}!`);
 
-    if (user.tipo === 1) {
-      res.status(200).send(`Olá, usuário tipo 1 com ID ${user.id}!`);
-    } else if (user.tipo === 2) {
-      res.status(200).send(`Olá, usuário tipo 2 com ID ${user.id}!`);
-    } else {
-      res.status(200).send(`Olá, usuário com ID ${user.id} e tipo desconhecido!`);
-    }
   } catch (error) {
     console.error('Erro ao obter usuário:', error);
     res.status(500).send('Erro ao obter usuário');
@@ -128,32 +114,8 @@ app.get('/me2', verifyToken, async (req, res ) => {
 });
 //-----------------------------------------------------------------------
 
-app.post('/addDistribuidor', async (req, res) => {
-  try {
-
-    const {
-      nomeDistribuidor,
-      enderecoDistribuidor,
-      loginUsuario,
-      senhaUsuario
-    } = req.body;
-
-    await addDistribuidor(nomeDistribuidor, enderecoDistribuidor, loginUsuario, senhaUsuario);
-
-    res.send('Distribuidor inseridos com sucesso!');
-  } catch (error) {
-    console.error('Erro ao inserir distribuidor:', error);
-    res.status(500).send('Erro ao inserir distribuidor');
-  }
-});
-
-//----------------------------------------------------------------------------------------
-
-
-
-
-//----------------------------------------------------------------------------------------
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+//----------------------------------------------------------------------------------------

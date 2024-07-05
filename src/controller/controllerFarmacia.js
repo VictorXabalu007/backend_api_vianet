@@ -1,6 +1,6 @@
 //vai adicionar as farmacias
 import { kknex } from "../config/database.js";
-import { insertUser } from "./controlerUser.js";
+import { insertUser } from "./controllerUser.js";
 
 
 //------------cadastra os dados exclusivos--------------------------------------------

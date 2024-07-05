@@ -1,4 +1,4 @@
-import { addDistribuidor } from "../controler/controlerDistribuidor.js";
+import { addDistribuidor } from "../controller/controllerDistribuidor.js";
 import { Router } from "express";
 
 const distribuidorRoutes = Router();

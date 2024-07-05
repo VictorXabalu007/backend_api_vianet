@@ -1,5 +1,6 @@
 import { kknex } from "../config/database.js";
-
+import jwt from 'jsonwebtoken';
+const secret="test"
 // Função para obter um usuário por email
 export function getUserByEmail(email) {
   try {
@@ -36,6 +37,25 @@ export async function insertUser(email, senha) {
     throw error;
   }
 }
+
+export async function getTipo(ID) {
+
+  try {
+    const user = await getUserByID(ID);
+    if (!user) {
+      console.log("erro ao buscar usuario")
+    }
+    return user.tipo;
+
+  } catch (error) {
+    console.error('Erro ao obter usuário:', error);
+    res.status(500).send('Erro ao obter usuário3');
+  }
+
+
+}
+
+
 export function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -57,3 +77,4 @@ export function verifyToken(req, res, next) {
     next();
   });
 }
+

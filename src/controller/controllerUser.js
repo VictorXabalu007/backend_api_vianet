@@ -1,8 +1,10 @@
-import { kknex } from "../config/database.js";
+import {kknex} from "../config/database.js";
 import jwt from 'jsonwebtoken';
-const secret="test"
+
+const secret = "test"
+
 // Função para obter um usuário por email
-export function getUserByEmail(email) {
+function getUserByEmail(email) {
   try {
     const user = kknex('Usuario').where({
       email
@@ -13,7 +15,8 @@ export function getUserByEmail(email) {
     throw error;
   }
 }
-export function getUserByID(id) {
+
+function getUserByID(id) {
   try {
     const user = kknex('Usuario').where({
       id
@@ -24,7 +27,7 @@ export function getUserByID(id) {
     throw error;
   }
 }
-export async function insertUser(email, senha) {
+async function insertUser(email, senha) {
   try {
     const [userId] = await kknex('Usuario').insert({
       email,
@@ -38,7 +41,7 @@ export async function insertUser(email, senha) {
   }
 }
 
-export async function getTipo(ID) {
+async function getTipo(ID) {
 
   try {
     const user = await getUserByID(ID);
@@ -56,7 +59,7 @@ export async function getTipo(ID) {
 }
 
 
-export function verifyToken(req, res, next) {
+function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
   if (!token) {
     return res.status(403).send({
@@ -78,3 +81,28 @@ export function verifyToken(req, res, next) {
   });
 }
 
+const getProfileImagePath = async (userId) => {
+  try {
+    const user = await kknex('Usuario').where({
+      id: userId
+    }).first();
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    return user.imgPerfil;
+  } catch (error) {
+    console.error('Erro ao obter o caminho da imagem de perfil:', error);
+    throw new Error('Erro ao obter o caminho da imagem de perfil');
+  }
+};
+
+export {
+  getProfileImagePath,
+  verifyToken,
+  getTipo,
+  insertUser,
+  getUserByID,
+  getUserByEmail
+};

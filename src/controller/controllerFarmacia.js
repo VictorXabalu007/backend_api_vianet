@@ -5,7 +5,7 @@ import { insertUser } from "./controllerUser.js";
 
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId) {
+async function insertFarmacia(username, celular, Nome, CNPJ, endereco) {
   try {
     const [FarmaciaId] = await kknex('Farmacia').insert({
       username,
@@ -13,8 +13,7 @@ async function insertFarmacia(username, celular, Nome, CNPJ, endereco, usuarioId
       celular,
       Nome,
       CNPJ,
-      endereco,
-      usuario_id: usuarioId
+      endereco
     });
     return FarmaciaId;
   } catch (error) {

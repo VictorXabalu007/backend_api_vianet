@@ -3,12 +3,11 @@ import { insertUser } from "./controllerUser.js";
 
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(username, endereco, usuarioId) {
+async function insertDistributor(username, endereco) {
   try {
     const [distributorId] = await kknex('Distribuidores').insert({
       username:username,
       endereco:endereco,
-      usuario_id: usuarioId
     });
     return distributorId;
   } catch (error) {

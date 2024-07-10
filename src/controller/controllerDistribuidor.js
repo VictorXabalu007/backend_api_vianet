@@ -1,14 +1,13 @@
 import { kknex } from "../config/database.js";
-import { insertUser } from "./controlerUser.js";
+import { insertUser } from "./controllerUser.js";
 
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(username, endereco, usuarioId) {
+async function insertDistributor(username, endereco) {
   try {
     const [distributorId] = await kknex('Distribuidores').insert({
       username:username,
       endereco:endereco,
-      usuario_id: usuarioId
     });
     return distributorId;
   } catch (error) {
@@ -16,6 +15,20 @@ async function insertDistributor(username, endereco, usuarioId) {
     throw error;
   }
 }
+
+
+export async function removeDistribuidor(distributorId) {
+  try {
+    await kknex('Distribuidores')
+      .where('id', distributorId)
+      .del();
+    console.log('Distribuidor removido com sucesso');
+  } catch (error) {
+    console.error('Erro ao remover distribuidor:', error);
+    throw error;
+  }
+}
+
 //------------principal--------------------------------------------
 export async function addDistribuidor(nomeDistribuidor, enderecoDistribuidor, loginUsuario, senhaUsuario) {
 

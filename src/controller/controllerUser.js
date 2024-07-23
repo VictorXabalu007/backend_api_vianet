@@ -27,12 +27,12 @@ function getUserByID(id) {
     throw error;
   }
 }
-async function insertUser(email, senha) {
+async function insertUser(email, senha,tipo) {
   try {
     const [userId] = await kknex('Usuario').insert({
       email,
       senha,
-      tipo: 2
+      tipo
     });
     return userId;
   } catch (error) {
@@ -40,6 +40,37 @@ async function insertUser(email, senha) {
     throw error;
   }
 }
+
+
+// Função para atualizar usuário
+async function updateUser(userId, email, senha) {
+  try {
+    await kknex('Usuario')
+      .where({ id: userId })
+      .update({
+        email,
+        senha
+      });
+    console.log('Usuário atualizado com sucesso');
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    throw error;
+  }
+}
+
+// Função para deletar usuário
+async function deleteUser(userId) {
+  try {
+    await kknex('Usuario')
+      .where({ id: userId })
+      .del();
+    console.log('Usuário deletado com sucesso');
+  } catch (error) {
+    console.error('Erro ao deletar usuário:', error);
+    throw error;
+  }
+}
+
 
 async function getTipo(ID) {
 
@@ -57,7 +88,6 @@ async function getTipo(ID) {
 
 
 }
-
 
 function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
@@ -103,6 +133,8 @@ export {
   verifyToken,
   getTipo,
   insertUser,
+  updateUser,
+  deleteUser,
   getUserByID,
   getUserByEmail
 };

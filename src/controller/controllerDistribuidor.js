@@ -1,26 +1,42 @@
 import { kknex } from "../config/database.js";
-import { insertUser } from "./controllerUser.js";
+import { insertUser,updateUser, deleteUser} from "./controllerUser.js";
 
 //------------cadastra os dados exclusivos--------------------------------------------
 
-async function insertDistributor(username, endereco) {
+async function insertDistributor(username, endereco,userId) {
   try {
-    const [distributorId] = await kknex('Distribuidores').insert({
+    await kknex('Distribuidores').insert({
       username:username,
       endereco:endereco,
+      usuario_id:userId
     });
-    return distributorId;
   } catch (error) {
     console.error('Erro ao inserir distribuidor:', error);
     throw error;
   }
 }
-
-
-export async function removeDistribuidor(distributorId) {
+export async function editDistrubidor(username, celular, Nome, CNPJ, endereco, loginUsuario, senhaUsuario,ID) {
+  const trx = await kknex.transaction();
   try {
+    await updateDistrubidor(ID,username, celular, Nome, CNPJ, endereco);
+    await updateUser(ID, loginUsuario, senhaUsuario);
+
+    await trx.commit();
+
+    console.log('distribuidor e usuário atualizados com sucesso');
+  } catch (error) {
+    // Reverter transação
+    await trx.rollback();
+    console.error('Erro ao atualizar farmácia e usuário:', error);
+  }
+}
+
+
+export async function removeDistribuidor(ID) {
+  try {
+    await deleteUser(ID);
     await kknex('Distribuidores')
-      .where('id', distributorId)
+      .where('usuario_id', ID)
       .del();
     console.log('Distribuidor removido com sucesso');
   } catch (error) {
@@ -33,10 +49,10 @@ export async function removeDistribuidor(distributorId) {
 export async function addDistribuidor(nomeDistribuidor, enderecoDistribuidor, loginUsuario, senhaUsuario) {
 
   const trx = await kknex.transaction();
-
+  const tipo=1;
   try {
 
-    const userId = await insertUser(loginUsuario, senhaUsuario);
+    const userId = await insertUser(loginUsuario, senhaUsuario,tipo);
 
     await insertDistributor(nomeDistribuidor, enderecoDistribuidor, userId);
 

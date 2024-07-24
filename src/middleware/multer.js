@@ -12,7 +12,7 @@ const generateUniqueFileName = () => {
 // Configuração do multer
 const storageUser = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.resolve('img/user'));  // Certifique-se de que o caminho está correto
+    cb(null, path.resolve('img/user'));
   },
   filename: function (req, file, cb) {
     const uniqueFileName = generateUniqueFileName();
@@ -20,15 +20,7 @@ const storageUser = multer.diskStorage({
   }
 });
 
-const storageProduct = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.resolve('img/product'));  // Certifique-se de que o caminho está correto
-  },
-  filename: function (req, file, cb) {
-    const uniqueFileName = generateUniqueFileName();
-    cb(null, uniqueFileName + path.extname(file.originalname));
-  }
-});
+
 
 export const uploadProfileImage = async (req, res) => {
   const userId = req.userId;
@@ -62,5 +54,27 @@ export const uploadProfileImage = async (req, res) => {
   }
 };
 
-export const uploadProduct = multer({ storage: storageProduct });
+// Configuração do multer para produtos
+const storageProduct = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.resolve('img/product'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueFileName = generateUniqueFileName();
+    cb(null, uniqueFileName + path.extname(file.originalname));
+  }
+});
+
+// Configuração do upload para múltiplas imagens de produto
+export const uploadProduct = multer({ storage: storageProduct }).array('imagens', 10); // Limite de 10 imagens por vez
+
 export const uploadUser = multer({ storage: storageUser });
+
+
+
+
+
+
+
+
+

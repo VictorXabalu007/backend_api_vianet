@@ -108,6 +108,7 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+
 export const getProductById = async (req, res) => {
   const { id_produto } = req.params;
 

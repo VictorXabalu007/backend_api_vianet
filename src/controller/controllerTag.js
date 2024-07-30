@@ -1,14 +1,21 @@
-
-import { kknex } from "../config/database.js";
+import {kknex} from "../config/database.js";
 
 // Função para cadastrar uma tag
 export const createTag = async (req, res) => {
-  try{
-  const { tag } = req.body;
-  await kknex('tags').insert({ tag });
-  res.status(201).send('Tag cadastrada com sucesso!');
-  }catch{
-    console.error('Erro ao cadastrar a tag:', error);
+  if (req.userId == 0 || req.userId == 1) {
+    try {
+      const {
+        tag
+      } = req.body;
+      await kknex('tags').insert({
+        tag
+      });
+      res.status(201).send('Tag cadastrada com sucesso!');
+    } catch {
+      console.error('Erro ao cadastrar a tag:', error);
+    }
+  } else {
+    res.status(401).send('Você não tem permissão para realizar essa ação!');
   }
 };
 
@@ -21,53 +28,61 @@ export const getAllTags = async (req, res) => {
 
 // Função interna para verificar se uma string é igual a alguma armazenada
 export const tagExists = async (str) => {
-  try{
-  const tags = await kknex('tags').select('tag');
-  return tags.some(tagObj => tagObj.tag === str);
-  }catch{
+  try {
+    const tags = await kknex('tags').select('tag');
+    return tags.some(tagObj => tagObj.tag === str);
+  } catch {
     console.error('Erro ao verificar se a tag existe:', error);
   }
-
-
 };
 
 // Função para editar uma tag pelo nome
 export const updateTag = async (req, res) => {
-  try{
-  const { tag } = req.params;
-  const { newTag } = req.body;
+  if (req.userId == 0 || req.userId == 1) {
+    try {
+      const {tag} = req.params;
+      const {newTag} = req.body;
 
-  // Verifica se a nova tag já existe
-  const existingTag = await kknex('tags').where('tag', newTag).first();
-  if (existingTag) {
-    return res.status(400).send('A nova tag já existe.');
-  }
+      // Verifica se a nova tag já existe
+      const existingTag = await kknex('tags').where('tag', newTag).first();
+      if (existingTag) {
+        return res.status(400).send('A nova tag já existe.');
+      }
 
-  // Atualiza a tag
-  const updated = await kknex('tags')
-    .where('tag', tag)
-    .update({ tag: newTag });
+      // Atualiza a tag
+      const updated = await kknex('tags')
+        .where('tag', tag)
+        .update({
+          tag: newTag
+        });
 
-  if (updated) {
-    res.send('Tag atualizada com sucesso!');
+      if (updated) {
+        res.send('Tag atualizada com sucesso!');
+      } else {
+        res.status(404).send('Tag não encontrada.');
+      }
+    } catch {
+      console.error('Erro ao atualizar a tag:', error);
+    };
   } else {
-    res.status(404).send('Tag não encontrada.');
+    res.status(401).send('Você não tem permissão para realizar essa ação.');
   }
-  }catch{
-    console.error('Erro ao atualizar a tag:', error);
-  };
 };
 export const deleteTag = async (req, res) => {
-  const { tag } = req.params;
+  const {tag} = req.params;
+  if (req.userId == 0 || req.userId == 1) {
+    // Tenta apagar a tag
+    const deleted = await kknex('tags')
+      .where('tag', tag)
+      .del();
 
-  // Tenta apagar a tag
-  const deleted = await kknex('tags')
-    .where('tag', tag)
-    .del();
-
-  if (deleted) {
-    res.send('Tag apagada com sucesso!');
+    if (deleted) {
+      res.send('Tag apagada com sucesso!');
+    } else {
+      res.status(404).send('Tag não encontrada.');
+    }
   } else {
-    res.status(404).send('Tag não encontrada.');
+    res.status(401).send('Você não tem permissão para realizar essa ação!');
   }
+
 };
